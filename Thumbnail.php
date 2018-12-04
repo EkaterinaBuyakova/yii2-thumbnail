@@ -114,16 +114,29 @@ class Thumbnail
                 $wSize = $watermark->getSize();
 
                 $point = array();
-                if (self::$position[0] == 'right') {
-                    $point[0] = $size->getWidth() - $wSize->getWidth() - self::$padding[0];
-                } else {
-                    $point[0] = self::$padding[0];
+
+                switch (self::$position[0]) {
+                    case 'right':
+                        $point[0] = $size->getWidth() - $wSize->getWidth() - self::$padding[0];
+                        break;
+                    case 'center':
+                        $point[0] = floor(($size->getWidth() - $wSize->getWidth())/2);
+                        break;
+                    default:
+                        $point[0] = self::$padding[0];
                 }
-                if (self::$position[1] == 'bottom') {
-                    $point[1] = $size->getHeight() - $wSize->getHeight() - self::$padding[1];
-                } else {
-                    $point[1] = self::$padding[1];
+
+                switch (self::$position[1]) {
+                    case 'bottom':
+                        $point[1] = $size->getHeight() - $wSize->getHeight() - self::$padding[1];
+                        break;
+                    case 'center':
+                        $point[1] = floor(($size->getHeight() - $wSize->getHeight())/2);
+                        break;
+                    default:
+                        $point[1] = self::$padding[1];
                 }
+
                 $bottomRight = new Point($point[0], $point[1]);
                 $image->paste($watermark, $bottomRight);
                 $image->save($thumbnailFile, ['quality' => 100]);
